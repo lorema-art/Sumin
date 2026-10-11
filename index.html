@@ -85,8 +85,8 @@
     content:"";position:absolute;left:6px;top:8px;bottom:8px;width:2px;border-radius:2px;
     background:linear-gradient(180deg,#9EC3DA 0%,var(--dusk) 60%,var(--night) 100%);
   }
-  .flow li{position:relative;padding:0 0 20px}
-  .flow li::before{
+  .flow > li{position:relative;padding:0 0 20px}
+  .flow > li::before{
     content:"";position:absolute;left:-25px;top:8px;width:12px;height:12px;border-radius:50%;
     background:var(--sky);border:2px solid var(--sea);
   }
@@ -95,12 +95,12 @@
   .flow .note{font-size:14px;color:var(--soft);display:block;margin-top:2px}
 
   /* 밤 일정 */
-  .flow li.night{
+  .flow > li.night{
     margin:4px 0 16px;padding:16px 16px 16px;border-radius:14px;
     background:var(--night);color:#EDEBFF;
   }
-  .flow li.night::before{left:-25px;top:22px;background:var(--glow);border-color:var(--glow);box-shadow:0 0 12px var(--glow)}
-  .flow li.night .t,.flow li.night .note{color:#A9AFD0}
+  .flow > li.night::before{left:-25px;top:22px;background:var(--glow);border-color:var(--glow);box-shadow:0 0 12px var(--glow)}
+  .flow > li.night .t,.flow > li.night .note{color:#A9AFD0}
 
   /* 드론쇼 — 이 페이지의 하이라이트 */
   .drone{position:relative;overflow:hidden;padding-top:86px !important}
@@ -124,8 +124,44 @@
   footer p{font-size:34px;line-height:1.2;color:var(--sea)}
   footer small{display:block;margin-top:6px;color:var(--soft);font-size:13px}
 
+
+  /* 출발 시간 고르기 */
+  .dep{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 8px}
+  .dep label{position:relative;display:block;cursor:pointer}
+  .dep input{position:absolute;opacity:0;pointer-events:none}
+  .dep .opt{display:block;height:100%;padding:14px 14px 12px;border-radius:16px;background:#fff;border:1.5px solid var(--line);transition:border-color .2s,background .2s}
+  .dep .opt b{display:block;font-family:"Nanum Pen Script",cursive;font-weight:400;font-size:30px;line-height:1;color:var(--sea);white-space:nowrap}
+  .dep .opt small{display:block;margin-top:6px;font-size:13px;line-height:1.5;color:var(--soft)}
+  .dep input:checked + .opt{border-color:var(--sea);background:#E7EEF5}
+  .dep input:focus-visible + .opt{outline:2px solid var(--sea);outline-offset:2px}
+  .dep-hint{font-size:14px;color:var(--soft);margin-bottom:22px}
+  .v11{display:none}
+  body.dep-11 .v9{display:none}
+  body.dep-11 .v11{display:block}
+
+  /* 맛집 고르기 */
+  .picks{list-style:none;margin-top:10px;border-radius:14px;background:#fff;border:1px solid var(--line);overflow:hidden}
+  .picks li{display:flex;align-items:center;border-top:1px solid var(--line)}
+  .picks li:first-child{border-top:0}
+  .picks label{flex:1;display:flex;gap:12px;align-items:flex-start;padding:12px 4px 12px 14px;cursor:pointer;min-width:0}
+  .picks input{width:20px;height:20px;margin-top:3px;accent-color:var(--dusk);flex:none}
+  .picks b{display:block;font-weight:400;font-size:16px}
+  .picks small{display:block;font-size:13px;line-height:1.5;color:var(--soft)}
+  .picks input:checked ~ span b::after{content:" ♥";color:var(--dusk)}
+  .picks a{flex:none;align-self:stretch;display:flex;align-items:center;padding:0 14px;font-size:13px;color:var(--sea);text-decoration:none;border-left:1px solid var(--line)}
+  .picks a:focus-visible{outline:2px solid var(--sea);outline-offset:-2px}
+  .flow > li.night .picks{color:var(--ink)}
+
+  /* 보내기 */
+  .send{margin-top:46px;padding:22px 20px;border-radius:18px;background:var(--sand)}
+  .send h2{font-size:34px;font-weight:400;line-height:1.1;margin-bottom:6px}
+  .send p{font-size:14px;color:var(--soft)}
+  .send button{margin-top:14px;width:100%;padding:14px;border:0;border-radius:999px;background:var(--sea);color:#fff;font:inherit;font-size:16px;cursor:pointer}
+  .send .done{margin-top:10px;font-size:14px;color:var(--sea);min-height:1.4em}
+
   @media (prefers-reduced-motion:reduce){
     .sun,.drone .dot{animation:none}
+    .dep .opt{transition:none}
     html{scroll-behavior:auto}
   }
 </style>
@@ -163,14 +199,41 @@
 
   <section class="day" id="d1">
     <div class="day-head"><span class="date hand">10.16</span><span class="dow">금요일</span></div>
-    <h2 class="hand">내려가서, 네 친구들이랑 저녁</h2>
-    <ol class="flow">
-      <li><span class="t">아침 7시 반</span><span class="what">서울에서 출발</span><span class="note">차 막히기 전에 일찍 가자. 휴게소 간식은 필수</span></li>
-      <li><span class="t">12시 반</span><span class="what">부산 도착, 첫 끼는 돼지국밥</span></li>
-      <li><span class="t">2시</span><span class="what">광안리 숙소 체크인</span><span class="note">2박 동안 바다 보이는 방</span></li>
-      <li><span class="t">2시 반</span><span class="what">전포 카페거리에서 커피</span><span class="note">오는 길 피곤했으니 천천히</span></li>
-      <li class="night"><span class="t">저녁 6시 반부터</span><span class="what">수민 친구들이랑 저녁 🍻</span><span class="note">장소는 친구들이랑 정하자. 차는 숙소에 두고 택시로</span></li>
-      <li class="night"><span class="t">밤 10시</span><span class="what">광안대교 보면서 해변 산책</span></li>
+    <h2 class="hand">내려가서, 서면에서 네 친구들이랑 저녁</h2>
+
+    <div class="dep" role="radiogroup" aria-label="출발 시간">
+      <label><input type="radio" name="dep" value="9"><span class="opt"><b>9시 출발</b><small>2시쯤 부산 도착, 서면에서 늦은 점심 먹고 여유롭게</small></span></label>
+      <label><input type="radio" name="dep" value="11"><span class="opt"><b>11시 출발</b><small>아침 푹 자고, 점심은 휴게소에서. 4시쯤 도착</small></span></label>
+    </div>
+    <p class="dep-hint" id="depHint">언제 출발할지 수민이가 골라줘</p>
+
+    <!-- 9시 출발 -->
+    <ol class="flow v9">
+      <li><span class="t">아침 9시</span><span class="what">서울에서 출발</span><span class="note">중간에 휴게소에서 커피 한 잔</span></li>
+      <li><span class="t">2시</span><span class="what">광안리 숙소 도착, 짐 맡기기</span><span class="note">차는 숙소에 두고 여기서부턴 택시로</span></li>
+      <li><span class="t">2시 반</span><span class="what">택시 타고 서면으로</span><span class="note">20분쯤 걸려요</span></li>
+      <li><span class="t">3시</span><span class="what">서면에서 늦은 점심</span><span class="note">가고 싶은 곳에 체크해줘</span>
+        <ul class="picks" data-meal="16일 점심 (서면)">
+          <li><label><input type="checkbox" value="송정3대국밥"><span><b>송정3대국밥</b><small>맑고 담백한 돼지국밥. 수육백반이 인기, 24시간 영업</small></span></label><a href="https://map.naver.com/p/search/송정3대국밥 서면">지도</a></li>
+          <li><label><input type="checkbox" value="춘하추동밀면"><span><b>춘하추동밀면</b><small>서면시장 안 밀면집. 한약재 향 나는 육수, 만두도 꼭</small></span></label><a href="https://map.naver.com/p/search/춘하추동밀면 서면">지도</a></li>
+          <li><label><input type="checkbox" value="이재모피자 서면점"><span><b>이재모피자 서면점</b><small>치즈 듬뿍 크러스트 피자로 유명한 부산 피자집</small></span></label><a href="https://map.naver.com/p/search/이재모피자 서면점">지도</a></li>
+        </ul>
+      </li>
+      <li><span class="t">4시</span><span class="what">전포 카페거리에서 커피</span><span class="note">서면 바로 옆, 예쁜 카페 골목</span></li>
+      <li><span class="t">5시</span><span class="what">서면 구경하면서 산책</span></li>
+      <li class="night"><span class="t">저녁 6시 반부터</span><span class="what">서면에서 수민 친구들이랑 저녁 🍻</span></li>
+      <li class="night"><span class="t">밤 10시쯤</span><span class="what">택시로 광안리, 광안대교 보면서 해변 산책</span></li>
+    </ol>
+
+    <!-- 11시 출발 -->
+    <ol class="flow v11">
+      <li><span class="t">아침 11시</span><span class="what">서울에서 출발</span><span class="note">늦잠 자고 천천히</span></li>
+      <li><span class="t">1시 반</span><span class="what">휴게소에서 점심</span><span class="note">호두과자랑 소떡소떡은 국룰</span></li>
+      <li><span class="t">4시</span><span class="what">광안리 숙소 체크인</span><span class="note">차는 숙소에 두고 여기서부턴 택시로</span></li>
+      <li><span class="t">4시 반</span><span class="what">택시 타고 서면으로</span><span class="note">20분쯤 걸려요</span></li>
+      <li><span class="t">5시</span><span class="what">전포 카페거리에서 커피</span><span class="note">친구들 만나기 전에 잠깐 쉬어가기</span></li>
+      <li class="night"><span class="t">저녁 6시 반부터</span><span class="what">서면에서 수민 친구들이랑 저녁 🍻</span></li>
+      <li class="night"><span class="t">밤 10시쯤</span><span class="what">택시로 광안리, 광안대교 보면서 해변 산책</span></li>
     </ol>
   </section>
 
@@ -178,13 +241,31 @@
     <div class="day-head"><span class="date hand">10.17</span><span class="dow">토요일</span></div>
     <h2 class="hand">바닷길 따라 하루 종일, 밤엔 드론쇼</h2>
     <ol class="flow">
-      <li><span class="t">아침 9시 반</span><span class="what">해운대에서 가볍게 브런치</span></li>
-      <li><span class="t">10시 반</span><span class="what">스카이캡슐 타고 미포에서 청사포까지</span><span class="note">바다 바로 위를 달리는 작은 캡슐, 둘만 타요</span></li>
-      <li><span class="t">11시 반</span><span class="what">청사포 다릿돌전망대에서 사진</span></li>
-      <li><span class="t">12시 반</span><span class="what">점심은 조개구이 아니면 밀면</span></li>
-      <li><span class="t">2시 반</span><span class="what">기장 오션뷰 카페</span><span class="note">통창으로 바다만 보이는 곳에서 쉬기</span></li>
-      <li><span class="t">4시</span><span class="what">해동용궁사</span><span class="note">바닷가 절벽 위에 있는 절, 노을 지기 전에</span></li>
-      <li><span class="t">6시</span><span class="what">광안리에서 회 한 상</span></li>
+      <li><span class="t">아침 10시</span><span class="what">해운대에서 아침 겸 브런치</span><span class="note">가고 싶은 곳에 체크해줘</span>
+        <ul class="picks" data-meal="17일 아침 (해운대)">
+          <li><label><input type="checkbox" value="기와집 대구탕"><span><b>기와집 대구탕</b><small>달맞이길 초입, 시원한 대구탕 한 그릇으로 해장 겸 아침</small></span></label><a href="https://map.naver.com/p/search/기와집대구탕 해운대">지도</a></li>
+          <li><label><input type="checkbox" value="상국이네"><span><b>상국이네</b><small>해운대시장 떡볶이·튀김·어묵. 가볍게 분식으로</small></span></label><a href="https://map.naver.com/p/search/상국이네 해운대">지도</a></li>
+          <li><label><input type="checkbox" value="치즈치즈치즈 마린"><span><b>치즈치즈치즈 마린</b><small>마린시티 파스타 브런치. 트러플크림 뇨끼, 10시 오픈</small></span></label><a href="https://map.naver.com/p/search/치즈치즈치즈 마린">지도</a></li>
+        </ul>
+      </li>
+      <li><span class="t">11시</span><span class="what">스카이캡슐 타고 미포에서 청사포까지</span><span class="note">바다 바로 위를 달리는 작은 캡슐, 둘만 타요</span></li>
+      <li><span class="t">12시</span><span class="what">청사포 다릿돌전망대에서 사진</span></li>
+      <li><span class="t">1시</span><span class="what">청사포에서 점심</span><span class="note">조개구이에 마무리 라면까지</span>
+        <ul class="picks" data-meal="17일 점심 (청사포·미포)">
+          <li><label><input type="checkbox" value="수민이네"><span><b>수민이네</b><small>이름부터 운명. 청사포 조개구이집, 가리비·전복·장어</small></span></label><a href="https://map.naver.com/p/search/수민이네 청사포">지도</a></li>
+          <li><label><input type="checkbox" value="도희네"><span><b>도희네</b><small>청사포 조개구이. 전복버터구이랑 해물라면 맛집</small></span></label><a href="https://map.naver.com/p/search/도희네 청사포">지도</a></li>
+          <li><label><input type="checkbox" value="미포끝집"><span><b>미포끝집</b><small>미포 쪽 조개구이·장어구이. 2인 소자로 딱 좋아요</small></span></label><a href="https://map.naver.com/p/search/미포끝집">지도</a></li>
+        </ul>
+      </li>
+      <li><span class="t">3시</span><span class="what">기장 오션뷰 카페</span><span class="note">통창으로 바다만 보이는 곳에서 쉬기</span></li>
+      <li><span class="t">4시 반</span><span class="what">해동용궁사</span><span class="note">바닷가 절벽 위에 있는 절, 노을 지기 전에</span></li>
+      <li><span class="t">6시 반</span><span class="what">광안리에서 회 한 상</span><span class="note">가고 싶은 곳에 체크해줘</span>
+        <ul class="picks" data-meal="17일 저녁 (광안리·민락)">
+          <li><label><input type="checkbox" value="신라횟집"><span><b>신라횟집</b><small>민락수변공원 앞 모듬회 코스. 물회도 맛있어요</small></span></label><a href="https://map.naver.com/p/search/신라횟집 민락">지도</a></li>
+          <li><label><input type="checkbox" value="호록호록"><span><b>호록호록</b><small>민락 활어시장에서 회 떠서 가져가 먹는 초장집. 부산 현지 스타일</small></span></label><a href="https://map.naver.com/p/search/호록호록 민락동">지도</a></li>
+          <li><label><input type="checkbox" value="해루질"><span><b>해루질</b><small>광안리 끝 남천동 해산물집. 굴, 돌멍게 같은 제철 해산물</small></span></label><a href="https://map.naver.com/p/search/해루질 남천동">지도</a></li>
+        </ul>
+      </li>
       <li class="night drone">
         <svg viewBox="0 0 320 84" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
           <g>
@@ -207,7 +288,7 @@
             <circle class="dot" cx="290" cy="56" r="1.6" style="animation-delay:.3s"/>
           </g>
         </svg>
-        <span class="t">저녁 7시, 또는 9시</span>
+        <span class="t">밤 9시</span>
         <span class="what">광안리 드론쇼 ✨</span>
         <span class="note">토요일에만 하는 쇼. 밤바다 위로 불빛 수백 개가 그림을 그려요. 바닷바람 차가우니 겉옷 꼭</span>
       </li>
@@ -222,17 +303,15 @@
       <li><span class="t">아침 10시</span><span class="what">체크아웃하고 영도로</span></li>
       <li><span class="t">10시 반</span><span class="what">흰여울문화마을 산책</span><span class="note">절벽 위 하얀 골목, 어디서 찍어도 바다가 배경</span></li>
       <li><span class="t">11시 반</span><span class="what">마을 안 바다 보이는 카페</span></li>
-      <li><span class="t">12시 반</span><span class="what">남포동·국제시장 먹방</span><span class="note">씨앗호떡, 비빔당면, 그리고 선물용 어묵</span></li>
-      <li><span class="t">2시</span><span class="what">서울로 출발</span><span class="note">저녁 7시 반쯤 도착 예정</span></li>
+      <li><span class="t">12시 반</span><span class="what">남포동에서 점심</span><span class="note">가고 싶은 곳에 체크해줘</span>
+        <ul class="picks" data-meal="18일 점심 (남포동)">
+          <li><label><input type="checkbox" value="18번완당집"><span><b>18번완당집</b><small>BIFF광장 앞 오래된 완당 노포. 얇은 피 완당면</small></span></label><a href="https://map.naver.com/p/search/18번완당집 남포동">지도</a></li>
+          <li><label><input type="checkbox" value="개미집 본점"><span><b>개미집 본점</b><small>국제시장 옆 낙곱새(낙지·곱창·새우) 원조집. 매콤하게</small></span></label><a href="https://map.naver.com/p/search/개미집 본점 신창동">지도</a></li>
+          <li><label><input type="checkbox" value="국제시장 먹자골목"><span><b>국제시장 먹자골목</b><small>비빔당면, 충무김밥, 씨앗호떡까지 조금씩 다 먹어보기</small></span></label><a href="https://map.naver.com/p/search/국제시장 먹자골목">지도</a></li>
+        </ul>
+      </li>
+      <li><span class="t">2시</span><span class="what">서울로 출발</span><span class="note">가는 길에 삼진어묵 들러서 선물용 어묵도</span></li>
     </ol>
-  </section>
-
-  <section class="extra">
-    <h2 class="hand">꼭 먹을 것</h2>
-    <div class="eat">
-      <span>돼지국밥</span><span>밀면</span><span>회 한 상</span><span>조개구이</span>
-      <span>어묵</span><span>씨앗호떡</span><span>비빔당면</span>
-    </div>
   </section>
 
   <section class="extra">
@@ -246,6 +325,13 @@
     <p class="tip">비 오면 토요일 오전은 해운대 실내 데이트로 바꿀게요.</p>
   </section>
 
+  <section class="send">
+    <h2 class="hand">다 골랐으면 알려줘</h2>
+    <p>출발 시간이랑 체크한 맛집을 메시지로 보내요.</p>
+    <button type="button" id="sendBtn">내 선택 보내기</button>
+    <p class="done" id="sendDone" aria-live="polite"></p>
+  </section>
+
 </main>
 
 <footer>
@@ -254,16 +340,50 @@
 </footer>
 
 <script>
-  // 체크한 항목은 이 폰에만 기억돼요
-  (function(){
-    var boxes=document.querySelectorAll('#bring input');
-    boxes.forEach(function(b){
-      try{ if(localStorage.getItem('busan-'+b.dataset.k)==='1') b.checked=true; }catch(e){}
-      b.addEventListener('change',function(){
-        try{ localStorage.setItem('busan-'+b.dataset.k,b.checked?'1':'0'); }catch(e){}
-      });
+(function(){
+  function get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+
+  // 출발 시간
+  var hint=document.getElementById('depHint');
+  function applyDep(v){
+    document.body.classList.toggle('dep-11', v==='11');
+    hint.textContent = v ? (v+'시 출발로 할게요. 바꾸고 싶으면 다시 눌러줘') : '언제 출발할지 수민이가 골라줘';
+  }
+  var saved=get('busan-dep');
+  document.querySelectorAll('input[name=dep]').forEach(function(r){
+    if(r.value===saved) r.checked=true;
+    r.addEventListener('change',function(){ set('busan-dep',r.value); applyDep(r.value); });
+  });
+  applyDep(saved);
+
+  // 체크박스 (맛집, 챙길 것) 기억하기
+  document.querySelectorAll('.picks input, #bring input').forEach(function(b){
+    var key='busan-'+(b.dataset.k || b.value);
+    if(get(key)==='1') b.checked=true;
+    b.addEventListener('change',function(){ set(key,b.checked?'1':'0'); });
+  });
+
+  // 내 선택 보내기
+  var btn=document.getElementById('sendBtn'), done=document.getElementById('sendDone');
+  btn.addEventListener('click',function(){
+    var dep=document.querySelector('input[name=dep]:checked');
+    var lines=['🌊 부산 여행, 내가 고른 거','','출발: '+(dep ? dep.value+'시' : '아직 못 정했어')];
+    document.querySelectorAll('.picks').forEach(function(ul){
+      if(ul.offsetParent===null) return; // 안 보이는 일정은 빼기
+      var chosen=[].map.call(ul.querySelectorAll('input:checked'),function(i){return i.value;});
+      lines.push(ul.dataset.meal+': '+(chosen.length ? chosen.join(', ') : '아무 데나 좋아'));
     });
-  })();
+    var text=lines.join('\n');
+    if(navigator.share){
+      navigator.share({text:text}).then(function(){ done.textContent='보냈어요 💌'; }).catch(function(){});
+    } else if(navigator.clipboard){
+      navigator.clipboard.writeText(text).then(function(){ done.textContent='복사했어요. 카톡에 붙여넣어 줘'; },function(){ done.textContent=text; });
+    } else {
+      done.textContent=text;
+    }
+  });
+})();
 </script>
 </body>
 </html>

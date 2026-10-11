@@ -140,6 +140,7 @@
   .stay2 .cell .dep{display:block;margin:0;flex:1}
   .stay2 .cell .dep label{height:100%}
   .stay2 .cell{min-width:0}
+  .stay2 .cell:nth-child(3){grid-column:1 / -1}
   .stay2 .opt b{white-space:normal;font-size:28px}
   .stay2 .see{font-size:13px;color:var(--sea);text-decoration:none;padding:2px 4px}
   .stay2 .see:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
@@ -254,7 +255,7 @@
     <div class="day-head"><span class="date hand">10.17</span><span class="dow">토요일</span></div>
     <h2 class="hand">바닷길 따라 하루 종일, 밤엔 드론쇼</h2>
 
-    <p class="choice-title">둘째 날 밤은 어디서 잘까? (광안리)</p>
+    <p class="choice-title">둘째 날 밤은 어디서 잘까?</p>
     <div class="stay2" role="radiogroup" aria-label="둘째 날 숙소">
       <div class="cell">
         <div class="dep"><label><input type="radio" name="stay2" value="마린뷰호텔"><span class="opt"><b>마린뷰호텔</b><small>광안리 해변 앞 오션브릿지 11~12층. 드론쇼까지 걸어서</small></span></label></div>
@@ -264,8 +265,12 @@
         <div class="dep"><label><input type="radio" name="stay2" value="두 번째 숙소"><span class="opt"><b>두 번째 숙소</b><small>링크 눌러서 사진이랑 방 구경해봐</small></span></label></div>
         <a class="see" href="https://naver.me/FuNCAeuj" target="_blank" rel="noopener">네이버에서 사진 보기</a>
       </div>
+      <div class="cell">
+        <div class="dep"><label><input type="radio" name="stay2" value="아늑 시그니처 호텔 해운대"><span class="opt"><b>아늑 시그니처 호텔</b><small>해운대 구남로, 해수욕장이랑 해운대시장 바로 근처. 드론쇼 보고는 택시로 15분쯤</small></span></label></div>
+        <a class="see" href="https://be4.wingsbooking.com/AANKHUD1111/roomSelect?check_in=2026-10-17&amp;check_out=2026-10-18&amp;prm_seq_no=&amp;cpny_seq_no=&amp;ext_memb_no=&amp;rooms=1&amp;adult=2&amp;children=0" target="_blank" rel="noopener">객실 보기</a>
+      </div>
     </div>
-    <p class="dep-hint" id="stay2Hint">둘 중에 마음에 드는 곳 골라줘</p>
+    <p class="dep-hint" id="stay2Hint">셋 중에 마음에 드는 곳 골라줘</p>
 
     <ol class="flow">
       <li class="sm"><span class="t">아침 9시 반</span><span class="what">서면 체크아웃하고 해운대로</span><span class="note">차로 30분쯤</span></li>
@@ -289,7 +294,7 @@
       </li>
       <li><span class="t">3시</span><span class="what">기장 오션뷰 카페</span><span class="note">통창으로 바다만 보이는 곳에서 쉬기</span></li>
       <li><span class="t">4시 반</span><span class="what">해동용궁사</span><span class="note">바닷가 절벽 위에 있는 절, 노을 지기 전에</span></li>
-      <li class="sm"><span class="t">6시</span><span class="what">광안리 숙소 체크인</span><span class="note">오늘 밤 숙소에 차 두고 걸어서 저녁 먹으러</span></li>
+      <li class="sm"><span class="t">6시</span><span class="what">둘째 날 숙소 체크인</span><span class="note">숙소에 차 두고 저녁 먹으러</span></li>
       <li><span class="t">6시 반</span><span class="what">광안리에서 회 한 상</span><span class="note">가고 싶은 곳에 체크해줘</span>
         <ul class="picks" data-meal="17일 저녁 (광안리·민락)">
           <li><label><input type="checkbox" value="신라횟집"><span><b>신라횟집</b><small>민락수변공원 앞 모듬회 코스. 물회도 맛있어요</small></span></label><a href="https://map.naver.com/p/search/신라횟집 민락">지도</a></li>

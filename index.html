@@ -135,6 +135,14 @@
   .dep input:checked + .opt{border-color:var(--sea);background:#E7EEF5}
   .dep input:focus-visible + .opt{outline:2px solid var(--sea);outline-offset:2px}
   .dep-hint{font-size:14px;color:var(--soft);margin-bottom:22px}
+  .stay2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 8px}
+  .stay2 .cell{display:flex;flex-direction:column;gap:6px}
+  .stay2 .cell .dep{display:block;margin:0;flex:1}
+  .stay2 .cell .dep label{height:100%}
+  .stay2 .cell{min-width:0}
+  .stay2 .opt b{white-space:normal;font-size:28px}
+  .stay2 .see{font-size:13px;color:var(--sea);text-decoration:none;padding:2px 4px}
+  .stay2 .see:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
   .choice-title{font-size:15px;color:var(--soft);margin:0 0 8px}
   body.dep-11 .d9, body:not(.dep-11) .d11{display:none !important}
   body.stay-ga .sm, body:not(.stay-ga) .ga{display:none !important}
@@ -245,6 +253,20 @@
   <section class="day" id="d2">
     <div class="day-head"><span class="date hand">10.17</span><span class="dow">토요일</span></div>
     <h2 class="hand">바닷길 따라 하루 종일, 밤엔 드론쇼</h2>
+
+    <p class="choice-title">둘째 날 밤은 어디서 잘까? (광안리)</p>
+    <div class="stay2" role="radiogroup" aria-label="둘째 날 숙소">
+      <div class="cell">
+        <div class="dep"><label><input type="radio" name="stay2" value="마린뷰호텔"><span class="opt"><b>마린뷰호텔</b><small>광안리 해변 앞 오션브릿지 11~12층. 드론쇼까지 걸어서</small></span></label></div>
+        <a class="see" href="https://naver.me/5aFD3cqY" target="_blank" rel="noopener">네이버에서 사진 보기</a>
+      </div>
+      <div class="cell">
+        <div class="dep"><label><input type="radio" name="stay2" value="두 번째 숙소"><span class="opt"><b>두 번째 숙소</b><small>링크 눌러서 사진이랑 방 구경해봐</small></span></label></div>
+        <a class="see" href="https://naver.me/FuNCAeuj" target="_blank" rel="noopener">네이버에서 사진 보기</a>
+      </div>
+    </div>
+    <p class="dep-hint" id="stay2Hint">둘 중에 마음에 드는 곳 골라줘</p>
+
     <ol class="flow">
       <li class="sm"><span class="t">아침 9시 반</span><span class="what">서면 체크아웃하고 해운대로</span><span class="note">차로 30분쯤</span></li>
       <li><span class="t">10시</span><span class="what">아침은 그날 컨디션 보고</span><span class="note">배고프면 가볍게, 아니면 패스해도 OK</span>
@@ -267,7 +289,7 @@
       </li>
       <li><span class="t">3시</span><span class="what">기장 오션뷰 카페</span><span class="note">통창으로 바다만 보이는 곳에서 쉬기</span></li>
       <li><span class="t">4시 반</span><span class="what">해동용궁사</span><span class="note">바닷가 절벽 위에 있는 절, 노을 지기 전에</span></li>
-      <li class="sm"><span class="t">6시</span><span class="what">광안리 숙소 체크인</span><span class="note">오늘 밤은 광안리. 차 두고 걸어서 저녁 먹으러</span></li>
+      <li class="sm"><span class="t">6시</span><span class="what">광안리 숙소 체크인</span><span class="note">오늘 밤 숙소에 차 두고 걸어서 저녁 먹으러</span></li>
       <li><span class="t">6시 반</span><span class="what">광안리에서 회 한 상</span><span class="note">가고 싶은 곳에 체크해줘</span>
         <ul class="picks" data-meal="17일 저녁 (광안리·민락)">
           <li><label><input type="checkbox" value="신라횟집"><span><b>신라횟집</b><small>민락수변공원 앞 모듬회 코스. 물회도 맛있어요</small></span></label><a href="https://map.naver.com/p/search/신라횟집 민락">지도</a></li>
@@ -336,7 +358,7 @@
 
   <section class="send">
     <h2 class="hand">다 골랐으면 알려줘</h2>
-    <p>출발 시간, 첫날 숙소, 체크한 맛집을 메시지로 보내요.</p>
+    <p>출발 시간, 숙소, 체크한 맛집을 메시지로 보내요.</p>
     <button type="button" id="sendBtn">내 선택 보내기</button>
     <p class="done" id="sendDone" aria-live="polite"></p>
   </section>
@@ -373,6 +395,12 @@
   });
   apply();
 
+  var h2=document.getElementById('stay2Hint'), s2=get('busan-stay2');
+  document.querySelectorAll('input[name=stay2]').forEach(function(r){
+    if(r.value===s2){ r.checked=true; h2.textContent=r.value+'로 할게요. 바꾸고 싶으면 다시 눌러줘'; }
+    r.addEventListener('change',function(){ set('busan-stay2',r.value); h2.textContent=r.value+'로 할게요. 바꾸고 싶으면 다시 눌러줘'; });
+  });
+
   // 체크박스 (맛집, 챙길 것) 기억하기
   document.querySelectorAll('.picks input, #bring input').forEach(function(b){
     var key='busan-'+(b.dataset.k || b.value);
@@ -386,6 +414,8 @@
     var dep=document.querySelector('input[name=dep]:checked');
     var stay=document.querySelector('input[name=stay]:checked');
     var lines=['🌊 첫 부산 데이트, 내가 고른 거','','출발: '+(dep ? dep.value+'시' : '아직 못 정했어'),'첫날 숙소: '+(stay ? stayName[stay.value] : '아직 못 정했어')];
+    var st2=document.querySelector('input[name=stay2]:checked');
+    lines.push('둘째 날 숙소: '+(st2 ? st2.value : '아직 못 정했어'));
     document.querySelectorAll('.picks').forEach(function(ul){
       if(ul.closest('li').offsetParent===null) return; // 안 보이는 일정은 빼기
       var chosen=[].map.call(ul.querySelectorAll('input:checked'),function(i){return i.value;});

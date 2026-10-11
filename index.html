@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>수민이랑 부산</title>
+<meta name="description" content="10월 16일부터 18일까지, 둘이 가는 부산 여행">
+<meta property="og:title" content="수민이랑 부산 🌊">
+<meta property="og:description" content="10.16 금 – 10.18 일 · 우리 부산 여행 일정">
+<meta name="theme-color" content="#2B4C6F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky:#F3EEF2;      /* 늦은 오후 하늘 */
+    --ink:#22303F;
+    --soft:#5E6B79;
+    --sea:#2B4C6F;      /* 광안리 바다 */
+    --dusk:#E98F86;     /* 노을 */
+    --sand:#F7E6CF;
+    --night:#1B2440;    /* 밤바다 */
+    --glow:#B9AEFF;     /* 드론 불빛 */
+    --line:#D9D1DA;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    background:var(--sky);color:var(--ink);
+    font-family:"Gowun Dodum",system-ui,sans-serif;
+    font-size:16px;line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .hand{font-family:"Nanum Pen Script",cursive;font-weight:400}
+
+  /* ---------- 첫 화면: 노을 지는 광안리 ---------- */
+  .hero{
+    position:relative;min-height:80svh;overflow:hidden;
+    display:flex;flex-direction:column;justify-content:flex-end;
+    padding:0 24px 34px;color:#fff;
+    background:linear-gradient(180deg,#7C86B8 0%,#C99BB4 38%,#F2B79A 62%,#F6D3AE 74%,var(--sea) 74.2%,#203B58 100%);
+  }
+  .sun{
+    position:absolute;left:50%;top:64%;width:130px;height:130px;margin-left:-65px;
+    border-radius:50%;background:radial-gradient(circle,#FFF3D9 0%,#FFD6A6 55%,rgba(255,214,166,0) 72%);
+    animation:set 3.2s cubic-bezier(.2,.7,.2,1) both;
+  }
+  @keyframes set{from{transform:translateY(-90px);opacity:.4}to{transform:none;opacity:1}}
+  .bridge{position:absolute;left:0;right:0;top:calc(74% - 46px);width:100%;height:60px}
+  .glints{position:absolute;left:0;right:0;top:74%;bottom:0;
+    background:repeating-linear-gradient(180deg,rgba(255,214,166,.0) 0 9px,rgba(255,214,166,.28) 9px 10px);
+    -webkit-mask:radial-gradient(60% 70% at 50% 0,#000 0,transparent 70%);
+            mask:radial-gradient(60% 70% at 50% 0,#000 0,transparent 70%)}
+  .hero-text{position:relative}
+  .hero .to{font-size:30px;line-height:1;opacity:.9}
+  .hero h1{font-size:76px;line-height:.95;letter-spacing:-.5px;margin:6px 0 14px;text-shadow:0 2px 18px rgba(20,30,60,.25)}
+  .hero .when{font-size:15px;opacity:.92}
+  .hero .when b{font-weight:400;border-bottom:1px solid rgba(255,255,255,.6)}
+
+  /* ---------- 날짜 바로가기 ---------- */
+  nav{
+    position:sticky;top:0;z-index:5;display:flex;gap:8px;
+    padding:12px 16px;background:rgba(243,238,242,.92);
+    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav a{
+    flex:1;text-align:center;text-decoration:none;color:var(--ink);
+    padding:6px 0;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:14px;
+  }
+  nav a:focus-visible,button:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+
+  main{max-width:560px;margin:0 auto;padding:0 20px 40px}
+
+  /* ---------- 하루 ---------- */
+  .day{padding-top:44px;scroll-margin-top:60px}
+  .day-head{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+  .day-head .date{font-size:56px;line-height:1;color:var(--sea)}
+  .day-head .dow{font-size:15px;color:var(--soft)}
+  .day h2{font-size:34px;line-height:1.15;font-weight:400;margin-bottom:22px}
+
+  /* 하루가 낮에서 밤으로 흘러가는 타임라인 */
+  .flow{position:relative;list-style:none;padding-left:26px}
+  .flow::before{
+    content:"";position:absolute;left:6px;top:8px;bottom:8px;width:2px;border-radius:2px;
+    background:linear-gradient(180deg,#9EC3DA 0%,var(--dusk) 60%,var(--night) 100%);
+  }
+  .flow li{position:relative;padding:0 0 20px}
+  .flow li::before{
+    content:"";position:absolute;left:-25px;top:8px;width:12px;height:12px;border-radius:50%;
+    background:var(--sky);border:2px solid var(--sea);
+  }
+  .flow .t{font-size:13px;color:var(--soft);display:block;line-height:1.4}
+  .flow .what{font-size:17px}
+  .flow .note{font-size:14px;color:var(--soft);display:block;margin-top:2px}
+
+  /* 밤 일정 */
+  .flow li.night{
+    margin:4px 0 16px;padding:16px 16px 16px;border-radius:14px;
+    background:var(--night);color:#EDEBFF;
+  }
+  .flow li.night::before{left:-25px;top:22px;background:var(--glow);border-color:var(--glow);box-shadow:0 0 12px var(--glow)}
+  .flow li.night .t,.flow li.night .note{color:#A9AFD0}
+
+  /* 드론쇼 — 이 페이지의 하이라이트 */
+  .drone{position:relative;overflow:hidden;padding-top:86px !important}
+  .drone svg{position:absolute;left:0;top:0;width:100%;height:84px}
+  .drone .dot{fill:var(--glow);animation:tw 2.6s ease-in-out infinite}
+  @keyframes tw{0%,100%{opacity:.35}50%{opacity:1}}
+
+  /* 함께 챙길 것 */
+  section.extra{margin-top:46px}
+  section.extra h2{font-size:34px;font-weight:400;line-height:1.1;margin-bottom:14px}
+  .eat{display:flex;flex-wrap:wrap;gap:8px}
+  .eat span{background:var(--sand);padding:6px 14px;border-radius:999px;font-size:15px}
+  .bring{list-style:none}
+  .bring li{border-bottom:1px solid var(--line)}
+  .bring label{display:flex;gap:12px;align-items:center;padding:12px 2px;cursor:pointer}
+  .bring input{width:20px;height:20px;accent-color:var(--sea);flex:none}
+  .bring input:checked + span{color:var(--soft);text-decoration:line-through}
+  .tip{margin-top:14px;font-size:14px;color:var(--soft)}
+
+  footer{text-align:center;padding:40px 20px 60px}
+  footer p{font-size:34px;line-height:1.2;color:var(--sea)}
+  footer small{display:block;margin-top:6px;color:var(--soft);font-size:13px}
+
+  @media (prefers-reduced-motion:reduce){
+    .sun,.drone .dot{animation:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="sun" aria-hidden="true"></div>
+  <!-- 광안대교 실루엣 -->
+  <svg class="bridge" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">
+    <g fill="none" stroke="#2A3A5A" stroke-opacity=".55" stroke-width="1.4">
+      <path d="M0 52 H400"/>
+      <path d="M120 52 V8 M280 52 V8"/>
+      <path d="M0 40 Q60 46 120 10 Q200 52 280 10 Q340 46 400 40"/>
+      <path d="M130 52 L120 14 M150 52 L122 18 M170 52 L124 24 M110 52 L120 14 M90 52 L118 18 M70 52 L116 24"/>
+      <path d="M290 52 L280 14 M310 52 L282 18 M330 52 L284 24 M270 52 L280 14 M250 52 L278 18 M230 52 L276 24"/>
+    </g>
+  </svg>
+  <div class="glints" aria-hidden="true"></div>
+
+  <div class="hero-text">
+    <p class="to hand">수민아,</p>
+    <h1 class="hand">부산 가자</h1>
+    <p class="when"><b>10월 16일 금</b>부터 <b>18일 일</b>까지, 우리 둘이 2박 3일</p>
+  </div>
+</header>
+
+<nav aria-label="날짜별 일정">
+  <a href="#d1">16 금</a>
+  <a href="#d2">17 토</a>
+  <a href="#d3">18 일</a>
+</nav>
+
+<main>
+
+  <section class="day" id="d1">
+    <div class="day-head"><span class="date hand">10.16</span><span class="dow">금요일</span></div>
+    <h2 class="hand">내려가서, 네 친구들이랑 저녁</h2>
+    <ol class="flow">
+      <li><span class="t">아침 7시 반</span><span class="what">서울에서 출발</span><span class="note">차 막히기 전에 일찍 가자. 휴게소 간식은 필수</span></li>
+      <li><span class="t">12시 반</span><span class="what">부산 도착, 첫 끼는 돼지국밥</span></li>
+      <li><span class="t">2시</span><span class="what">광안리 숙소 체크인</span><span class="note">2박 동안 바다 보이는 방</span></li>
+      <li><span class="t">2시 반</span><span class="what">전포 카페거리에서 커피</span><span class="note">오는 길 피곤했으니 천천히</span></li>
+      <li class="night"><span class="t">저녁 6시 반부터</span><span class="what">수민 친구들이랑 저녁 🍻</span><span class="note">장소는 친구들이랑 정하자. 차는 숙소에 두고 택시로</span></li>
+      <li class="night"><span class="t">밤 10시</span><span class="what">광안대교 보면서 해변 산책</span></li>
+    </ol>
+  </section>
+
+  <section class="day" id="d2">
+    <div class="day-head"><span class="date hand">10.17</span><span class="dow">토요일</span></div>
+    <h2 class="hand">바닷길 따라 하루 종일, 밤엔 드론쇼</h2>
+    <ol class="flow">
+      <li><span class="t">아침 9시 반</span><span class="what">해운대에서 가볍게 브런치</span></li>
+      <li><span class="t">10시 반</span><span class="what">스카이캡슐 타고 미포에서 청사포까지</span><span class="note">바다 바로 위를 달리는 작은 캡슐, 둘만 타요</span></li>
+      <li><span class="t">11시 반</span><span class="what">청사포 다릿돌전망대에서 사진</span></li>
+      <li><span class="t">12시 반</span><span class="what">점심은 조개구이 아니면 밀면</span></li>
+      <li><span class="t">2시 반</span><span class="what">기장 오션뷰 카페</span><span class="note">통창으로 바다만 보이는 곳에서 쉬기</span></li>
+      <li><span class="t">4시</span><span class="what">해동용궁사</span><span class="note">바닷가 절벽 위에 있는 절, 노을 지기 전에</span></li>
+      <li><span class="t">6시</span><span class="what">광안리에서 회 한 상</span></li>
+      <li class="night drone">
+        <svg viewBox="0 0 320 84" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <g>
+            <circle class="dot" cx="70" cy="44" r="2.4" style="animation-delay:0s"/>
+            <circle class="dot" cx="84" cy="30" r="2.4" style="animation-delay:.2s"/>
+            <circle class="dot" cx="100" cy="26" r="2.4" style="animation-delay:.4s"/>
+            <circle class="dot" cx="114" cy="34" r="2.4" style="animation-delay:.6s"/>
+            <circle class="dot" cx="126" cy="26" r="2.4" style="animation-delay:.8s"/>
+            <circle class="dot" cx="142" cy="30" r="2.4" style="animation-delay:1s"/>
+            <circle class="dot" cx="156" cy="44" r="2.4" style="animation-delay:1.2s"/>
+            <circle class="dot" cx="142" cy="58" r="2.4" style="animation-delay:1.4s"/>
+            <circle class="dot" cx="126" cy="70" r="2.4" style="animation-delay:1.6s"/>
+            <circle class="dot" cx="114" cy="78" r="2.4" style="animation-delay:1.8s"/>
+            <circle class="dot" cx="100" cy="70" r="2.4" style="animation-delay:2s"/>
+            <circle class="dot" cx="84" cy="58" r="2.4" style="animation-delay:2.2s"/>
+            <circle class="dot" cx="200" cy="22" r="1.6" style="animation-delay:.5s"/>
+            <circle class="dot" cx="236" cy="40" r="1.6" style="animation-delay:1.3s"/>
+            <circle class="dot" cx="268" cy="18" r="1.6" style="animation-delay:.9s"/>
+            <circle class="dot" cx="40" cy="20" r="1.6" style="animation-delay:1.7s"/>
+            <circle class="dot" cx="290" cy="56" r="1.6" style="animation-delay:.3s"/>
+          </g>
+        </svg>
+        <span class="t">저녁 7시, 또는 9시</span>
+        <span class="what">광안리 드론쇼 ✨</span>
+        <span class="note">토요일에만 하는 쇼. 밤바다 위로 불빛 수백 개가 그림을 그려요. 바닷바람 차가우니 겉옷 꼭</span>
+      </li>
+      <li class="night"><span class="t">그다음</span><span class="what">루프탑에서 한잔, 아니면 숙소에서 야경</span></li>
+    </ol>
+  </section>
+
+  <section class="day" id="d3">
+    <div class="day-head"><span class="date hand">10.18</span><span class="dow">일요일</span></div>
+    <h2 class="hand">영도 골목 걷고, 시장 구경하고 집으로</h2>
+    <ol class="flow">
+      <li><span class="t">아침 10시</span><span class="what">체크아웃하고 영도로</span></li>
+      <li><span class="t">10시 반</span><span class="what">흰여울문화마을 산책</span><span class="note">절벽 위 하얀 골목, 어디서 찍어도 바다가 배경</span></li>
+      <li><span class="t">11시 반</span><span class="what">마을 안 바다 보이는 카페</span></li>
+      <li><span class="t">12시 반</span><span class="what">남포동·국제시장 먹방</span><span class="note">씨앗호떡, 비빔당면, 그리고 선물용 어묵</span></li>
+      <li><span class="t">2시</span><span class="what">서울로 출발</span><span class="note">저녁 7시 반쯤 도착 예정</span></li>
+    </ol>
+  </section>
+
+  <section class="extra">
+    <h2 class="hand">꼭 먹을 것</h2>
+    <div class="eat">
+      <span>돼지국밥</span><span>밀면</span><span>회 한 상</span><span>조개구이</span>
+      <span>어묵</span><span>씨앗호떡</span><span>비빔당면</span>
+    </div>
+  </section>
+
+  <section class="extra">
+    <h2 class="hand">챙길 것</h2>
+    <ul class="bring" id="bring">
+      <li><label><input type="checkbox" data-k="coat"><span>저녁에 입을 겉옷 (바닷바람 차가워요)</span></label></li>
+      <li><label><input type="checkbox" data-k="shoes"><span>많이 걸어도 편한 신발</span></label></li>
+      <li><label><input type="checkbox" data-k="battery"><span>보조배터리</span></label></li>
+      <li><label><input type="checkbox" data-k="cam"><span>사진 많이 찍을 마음</span></label></li>
+    </ul>
+    <p class="tip">비 오면 토요일 오전은 해운대 실내 데이트로 바꿀게요.</p>
+  </section>
+
+</main>
+
+<footer>
+  <p class="hand">같이 가서 좋다 🌊</p>
+  <small>2026년 10월, 부산</small>
+</footer>
+
+<script>
+  // 체크한 항목은 이 폰에만 기억돼요
+  (function(){
+    var boxes=document.querySelectorAll('#bring input');
+    boxes.forEach(function(b){
+      try{ if(localStorage.getItem('busan-'+b.dataset.k)==='1') b.checked=true; }catch(e){}
+      b.addEventListener('change',function(){
+        try{ localStorage.setItem('busan-'+b.dataset.k,b.checked?'1':'0'); }catch(e){}
+      });
+    });
+  })();
+</script>
+</body>
+</html>

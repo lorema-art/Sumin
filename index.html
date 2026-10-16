@@ -144,6 +144,12 @@
   .stay2 .opt b{white-space:normal;font-size:28px}
   .stay2 .see{font-size:13px;color:var(--sea);text-decoration:none;padding:2px 4px}
   .stay2 .see:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+  .flow > li.booked{margin:4px 0 16px;padding:14px 16px;border-radius:14px;background:var(--sand);border:1.5px solid var(--dusk)}
+  .flow > li.booked::before{top:20px;background:var(--dusk);border-color:var(--dusk)}
+  .flow > li.booked .t{color:#B5584F}
+  .booked-link{display:inline-block;margin-top:8px;font-size:13px;color:var(--sea)}
+  .maplink{display:inline-block;margin-top:14px;padding:8px 16px;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.55);color:#fff;text-decoration:none;font-size:14px}
+  .maplink:focus-visible,.booked-link:focus-visible{outline:2px solid #fff;outline-offset:2px}
   .choice-title{font-size:15px;color:var(--soft);margin:0 0 8px}
   body.dep-11 .d9, body:not(.dep-11) .d11{display:none !important}
   body.stay-ga .sm, body:not(.stay-ga) .ga{display:none !important}
@@ -199,6 +205,7 @@
     <p class="to hand">수민이랑</p>
     <h1 class="hand">첫 부산<br>데이트</h1>
     <p class="when"><b>10월 16일 금</b>부터 <b>18일 일</b>까지, 우리 둘이 2박 3일</p>
+    <a class="maplink" href="map.html">🗺 우리 데이트 지도 보기</a>
   </div>
 </header>
 
@@ -253,7 +260,7 @@
 
   <section class="day" id="d2">
     <div class="day-head"><span class="date hand">10.17</span><span class="dow">토요일</span></div>
-    <h2 class="hand">바닷길 따라 하루 종일, 밤엔 드론쇼</h2>
+    <h2 class="hand">바닷길 따라 하루 종일, 송도 오마카세, 밤엔 드론쇼</h2>
 
     <p class="choice-title">둘째 날 밤은 어디서 잘까?</p>
     <div class="stay2" role="radiogroup" aria-label="둘째 날 숙소">
@@ -292,16 +299,13 @@
           <li><label><input type="checkbox" value="미포끝집"><span><b>미포끝집</b><small>미포 쪽 조개구이·장어구이. 2인 소자로 딱 좋아요</small></span></label><a href="https://map.naver.com/p/search/미포끝집">지도</a></li>
         </ul>
       </li>
-      <li><span class="t">3시</span><span class="what">기장 오션뷰 카페</span><span class="note">통창으로 바다만 보이는 곳에서 쉬기</span></li>
-      <li><span class="t">4시 반</span><span class="what">해동용궁사</span><span class="note">바닷가 절벽 위에 있는 절, 노을 지기 전에</span></li>
-      <li class="sm"><span class="t">6시</span><span class="what">둘째 날 숙소 체크인</span><span class="note">숙소에 차 두고 저녁 먹으러</span></li>
-      <li><span class="t">6시 반</span><span class="what">광안리에서 회 한 상</span><span class="note">가고 싶은 곳에 체크해줘</span>
-        <ul class="picks" data-meal="17일 저녁 (광안리·민락)">
-          <li><label><input type="checkbox" value="신라횟집"><span><b>신라횟집</b><small>민락수변공원 앞 모듬회 코스. 물회도 맛있어요</small></span></label><a href="https://map.naver.com/p/search/신라횟집 민락">지도</a></li>
-          <li><label><input type="checkbox" value="호록호록"><span><b>호록호록</b><small>민락 활어시장에서 회 떠서 가져가 먹는 초장집. 부산 현지 스타일</small></span></label><a href="https://map.naver.com/p/search/호록호록 민락동">지도</a></li>
-          <li><label><input type="checkbox" value="해루질"><span><b>해루질</b><small>광안리 끝 남천동 해산물집. 굴, 돌멍게 같은 제철 해산물</small></span></label><a href="https://map.naver.com/p/search/해루질 남천동">지도</a></li>
-        </ul>
+      <li><span class="t">2시 반</span><span class="what">해동용궁사</span><span class="note">바닷가 절벽 위에 있는 절. 청사포에서 차로 15분</span></li>
+      <li><span class="t">3시 15분</span><span class="what">기장 오션뷰 카페</span><span class="note">통창으로 바다만 보이는 곳에서 쉬기</span></li>
+      <li><span class="t">4시 15분</span><span class="what">송도로 출발</span><span class="note">토요일 오후라 넉넉히 1시간 잡았어요</span></li>
+      <li class="booked"><span class="t">5시 반 · 예약 완료</span><span class="what">상월대 오마카세 🍣</span><span class="note">송도 바닷가 4층에서 노을 보면서 저녁. 해가 6시쯤 져요</span>
+        <a class="booked-link" href="https://naver.me/5QDjsYjm" target="_blank" rel="noopener">부산 서구 송도해변로 10, 4층 · 지도 보기</a>
       </li>
+      <li><span class="t">7시 반</span><span class="what">둘째 날 숙소 체크인</span><span class="note">송도에서 광안리 35분, 해운대 45분쯤. 차 두고 드론쇼 보러</span></li>
       <li class="night drone">
         <svg viewBox="0 0 320 84" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
           <g>

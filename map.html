@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>우리 데이트 지도</title>
+<meta name="description" content="수민이랑 첫 부산 데이트, 우리가 갈 곳들">
+<meta property="og:title" content="수민이랑 첫 부산 데이트 지도 🗺">
+<meta property="og:description" content="10.16 – 10.18, 우리가 갈 곳들을 지도로">
+<meta name="theme-color" content="#2B4C6F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+  :root{
+    --sky:#F3EEF2; --ink:#22303F; --soft:#5E6B79; --line:#D9D1DA;
+    --sea:#2B4C6F; --dusk:#E98F86; --sand:#F7E6CF; --night:#1B2440;
+    --d1:#E07A70; --d2:#2B4C6F; --d3:#7B6BD0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--sky);color:var(--ink);font-family:"Gowun Dodum",system-ui,sans-serif;font-size:16px;line-height:1.6;word-break:keep-all;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;overflow:hidden}
+  .hand{font-family:"Nanum Pen Script",cursive;font-weight:400}
+
+  header{position:relative;z-index:500;padding:12px 16px 10px;background:var(--sky);border-bottom:1px solid var(--line)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  header h1{font-size:30px;line-height:1;color:var(--sea);white-space:nowrap}
+  .back{font-size:14px;color:var(--sea);text-decoration:none;white-space:nowrap}
+  .days{display:flex;gap:6px;margin-top:10px}
+  .days button{flex:1;padding:7px 0;border-radius:999px;border:1.5px solid var(--line);background:#fff;font:inherit;font-size:14px;color:var(--ink);cursor:pointer}
+  .days button[aria-pressed=true]{color:#fff;border-color:transparent}
+  .days button[data-day=all][aria-pressed=true]{background:var(--ink)}
+  .days button[data-day="1"][aria-pressed=true]{background:var(--d1)}
+  .days button[data-day="2"][aria-pressed=true]{background:var(--d2)}
+  .days button[data-day="3"][aria-pressed=true]{background:var(--d3)}
+  button:focus-visible,a:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+
+  #map{flex:1;min-height:0;background:#DCE6EE}
+
+  /* 아래 일정 목록 */
+  .sheet{position:relative;z-index:500;max-height:38vh;overflow-y:auto;background:#fff;border-top:1px solid var(--line);padding:6px 0 calc(10px + env(safe-area-inset-bottom))}
+  .sheet ol{list-style:none}
+  .sheet li button{width:100%;display:flex;gap:12px;align-items:flex-start;text-align:left;padding:10px 16px;border:0;background:none;font:inherit;color:inherit;cursor:pointer}
+  .sheet li button:active{background:var(--sky)}
+  .sheet .n{flex:none;width:26px;height:26px;border-radius:50%;color:#fff;font-size:13px;display:grid;place-items:center;margin-top:1px}
+  .sheet .t{display:block;font-size:12px;color:var(--soft);line-height:1.4}
+  .sheet .w{display:block;font-size:16px;line-height:1.4}
+  .sheet .day-label{padding:10px 16px 2px;font-size:26px;line-height:1.1}
+
+  /* 지도 위 핀 */
+  .pin{width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:grid;place-items:center;border:2px solid #fff;box-shadow:0 2px 6px rgba(27,36,64,.35)}
+  .pin span{transform:rotate(45deg);color:#fff;font:600 13px/1 "Gowun Dodum",sans-serif}
+  .pin.star{width:36px;height:36px}
+  .pin.star span{font-size:16px}
+  .seoul{background:#fff;border:1.5px solid var(--sea);border-radius:999px;padding:2px 10px;font:14px/1.4 "Gowun Dodum",sans-serif;color:var(--sea);white-space:nowrap;box-shadow:0 2px 6px rgba(27,36,64,.2)}
+
+  .leaflet-popup-content-wrapper{border-radius:14px}
+  .leaflet-popup-content{margin:12px 14px;font-family:"Gowun Dodum",sans-serif;font-size:14px;line-height:1.5;min-width:180px}
+  .pop .t{display:block;font-size:12px;color:var(--soft)}
+  .pop b{display:block;font-weight:400;font-size:17px;color:var(--ink);margin:1px 0 3px}
+  .pop .note{display:block;color:var(--soft)}
+  .pop a{display:inline-block;margin-top:8px;color:var(--sea)}
+  .pop .tag{display:inline-block;margin-top:6px;padding:1px 8px;border-radius:999px;background:var(--sand);color:#B5584F;font-size:12px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="top">
+    <h1 class="hand">우리 데이트 지도</h1>
+    <a class="back" href="./">일정표로 돌아가기</a>
+  </div>
+  <div class="days" role="group" aria-label="날짜 고르기">
+    <button type="button" data-day="all" aria-pressed="true">전체</button>
+    <button type="button" data-day="1" aria-pressed="false">16 금</button>
+    <button type="button" data-day="2" aria-pressed="false">17 토</button>
+    <button type="button" data-day="3" aria-pressed="false">18 일</button>
+  </div>
+</header>
+
+<div id="map" role="region" aria-label="부산 데이트 지도"></div>
+
+<div class="sheet" id="sheet"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(function(){
+  var COLORS={1:'#E07A70',2:'#2B4C6F',3:'#7B6BD0'};
+  var DAYNAME={1:'10.16 금 · 서면에서 모임',2:'10.17 토 · 바닷길, 송도, 드론쇼',3:'10.18 일 · 케이블카 타고 집으로'};
+
+  // 위치는 대략적인 지점이에요. 정확한 길찾기는 '네이버 지도에서 열기'로
+  var STOPS=[
+    {d:1,t:'오후',name:'서면',note:'늦은 점심이랑 전포 카페거리 산책',lat:35.1579,lng:129.0597,q:'서면역'},
+    {d:1,t:'오후',name:'전포 카페거리',note:'모임 전에 커피 한 잔',lat:35.1553,lng:129.0646,q:'전포카페거리'},
+    {d:1,t:'저녁 6시 반',name:'서면에서 모임 🍻',note:'수민 친구들이랑',lat:35.1569,lng:129.0585,q:'서면',star:true},
+    {d:1,t:'밤 10시',name:'광안리 해변 산책',note:'광안대교 보면서 (광안리 숙소일 때)',lat:35.1532,lng:129.1187,q:'광안리해수욕장'},
+
+    {d:2,t:'아침 10시',name:'해운대',note:'아침은 컨디션 보고',lat:35.1587,lng:129.1604,q:'해운대해수욕장'},
+    {d:2,t:'11시',name:'스카이캡슐 미포 정거장',note:'바다 위 캡슐 타고 청사포까지',lat:35.1588,lng:129.1702,q:'해운대 블루라인파크 미포정거장'},
+    {d:2,t:'12시',name:'청사포 다릿돌전망대',note:'사진 찍는 곳',lat:35.1614,lng:129.1934,q:'청사포 다릿돌전망대'},
+    {d:2,t:'1시',name:'청사포 조개구이',note:'수민이네 · 도희네 · 미포끝집 중에서',lat:35.1600,lng:129.1918,q:'청사포 조개구이'},
+    {d:2,t:'2시 반',name:'해동용궁사',note:'바닷가 절벽 위의 절',lat:35.1884,lng:129.2232,q:'해동용궁사'},
+    {d:2,t:'3시 15분',name:'기장 오션뷰 카페',note:'통창 바다뷰에서 쉬기',lat:35.1990,lng:129.2268,q:'기장 오션뷰 카페'},
+    {d:2,t:'5시 반',name:'상월대 오마카세 🍣',note:'송도해변로 10, 4층. 노을 보면서 저녁',lat:35.0767,lng:129.0198,link:'https://naver.me/5QDjsYjm',star:true,tag:'예약 완료'},
+    {d:2,t:'밤 9시',name:'광안리 드론쇼 ✨',note:'밤바다 위 불빛 쇼',lat:35.1527,lng:129.1196,q:'광안리해수욕장',star:true},
+
+    {d:3,t:'10시 반',name:'송도 해상케이블카',note:'유리 바닥 캐빈 추천',lat:35.0779,lng:129.0236,q:'송도해상케이블카'},
+    {d:3,t:'11시 반',name:'송도 구름산책로',note:'바다 위로 이어진 산책길',lat:35.0748,lng:129.0174,q:'송도구름산책로'},
+    {d:3,t:'12시 반',name:'남포동 · 국제시장',note:'18번완당집 · 개미집 · 먹자골목',lat:35.0997,lng:129.0284,q:'국제시장'},
+    {d:3,t:'2시',name:'서울로 출발',note:'삼진어묵 들러서 선물 사기',lat:35.0925,lng:129.0405,q:'삼진어묵 영도본점'}
+  ];
+
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var map=L.map('map',{zoomControl:false,attributionControl:true}).setView([36.3,127.8],7);
+  L.control.zoom({position:'bottomright'}).addTo(map);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    maxZoom:18, attribution:'&copy; OpenStreetMap'
+  }).addTo(map);
+
+  // 서울에서 부산까지
+  var SEOUL=[37.5665,126.9780], BUSAN=[35.1579,129.0597];
+  L.marker(SEOUL,{icon:L.divIcon({className:'',html:'<div class="seoul">서울에서 출발</div>',iconSize:null,iconAnchor:[46,12]}),interactive:false}).addTo(map);
+  var trip=L.polyline([SEOUL,[36.35,127.95],BUSAN],{color:'#E98F86',weight:3,dashArray:'2 8',lineCap:'round'}).addTo(map);
+
+  // 날짜별 핀이랑 동선
+  var layers={1:L.layerGroup(),2:L.layerGroup(),3:L.layerGroup()};
+  var markers=[];
+  var count={1:0,2:0,3:0};
+  STOPS.forEach(function(s,i){
+    count[s.d]++; s.no=count[s.d];
+    var size=s.star?36:30;
+    var icon=L.divIcon({className:'',iconSize:[size,size],iconAnchor:[size/2,size],popupAnchor:[0,-size],
+      html:'<div class="pin'+(s.star?' star':'')+'" style="background:'+COLORS[s.d]+'"><span>'+(s.star?'★':s.no)+'</span></div>'});
+    var href=s.link||('https://map.naver.com/p/search/'+encodeURIComponent(s.q));
+    var html='<div class="pop"><span class="t">'+['','16일 금','17일 토','18일 일'][s.d]+' · '+s.t+'</span><b>'+s.name+'</b><span class="note">'+s.note+'</span>'+
+      (s.tag?'<span class="tag">'+s.tag+'</span><br>':'')+
+      '<a href="'+href+'" target="_blank" rel="noopener">네이버 지도에서 열기</a></div>';
+    var m=L.marker([s.lat,s.lng],{icon:icon,title:s.name,zIndexOffset:s.star?500:0}).bindPopup(html);
+    m.addTo(layers[s.d]); markers[i]=m;
+  });
+  [1,2,3].forEach(function(d){
+    var pts=STOPS.filter(function(s){return s.d===d;}).map(function(s){return [s.lat,s.lng];});
+    L.polyline(pts,{color:COLORS[d],weight:3,opacity:.75,dashArray:'6 7'}).addTo(layers[d]);
+    layers[d].addTo(map);
+  });
+
+  // 아래 목록
+  var sheet=document.getElementById('sheet');
+  function renderList(day){
+    var html='';
+    [1,2,3].forEach(function(d){
+      if(day!=='all' && String(d)!==day) return;
+      html+='<p class="day-label hand" style="color:'+COLORS[d]+'">'+DAYNAME[d]+'</p><ol>';
+      STOPS.forEach(function(s,i){
+        if(s.d!==d) return;
+        html+='<li><button type="button" data-i="'+i+'"><span class="n" style="background:'+COLORS[d]+'">'+(s.star?'★':s.no)+'</span><span><span class="t">'+s.t+'</span><span class="w">'+s.name+'</span></span></button></li>';
+      });
+      html+='</ol>';
+    });
+    sheet.innerHTML=html; sheet.scrollTop=0;
+  }
+  sheet.addEventListener('click',function(e){
+    var b=e.target.closest('button[data-i]'); if(!b) return;
+    var m=markers[+b.dataset.i];
+    map.flyTo(m.getLatLng(),15,{duration:reduce?0:.8});
+    setTimeout(function(){ m.openPopup(); }, reduce?0:850);
+  });
+
+  function boundsFor(day){
+    var pts=STOPS.filter(function(s){return day==='all'||String(s.d)===day;}).map(function(s){return [s.lat,s.lng];});
+    return L.latLngBounds(pts);
+  }
+  function show(day){
+    [1,2,3].forEach(function(d){
+      if(day==='all'||String(d)===day){ if(!map.hasLayer(layers[d])) layers[d].addTo(map); }
+      else map.removeLayer(layers[d]);
+    });
+    document.querySelectorAll('.days button').forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.day===day ? 'true':'false'); });
+    renderList(day);
+    map.closePopup();
+    map.flyToBounds(boundsFor(day),{padding:[40,40],duration:reduce?0:.9,maxZoom:14});
+  }
+  document.querySelectorAll('.days button').forEach(function(b){
+    b.addEventListener('click',function(){ show(b.dataset.day); });
+  });
+
+  // 처음엔 한국 지도 전체에서 서울→부산, 그다음 부산으로 날아가기
+  renderList('all');
+  map.fitBounds(L.latLngBounds([SEOUL,BUSAN]).pad(.35));
+  setTimeout(function(){
+    map.flyToBounds(boundsFor('all'),{padding:[30,30],duration:reduce?0:2.2});
+  }, reduce?0:1300);
+})();
+</script>
+</body>
+</html>
